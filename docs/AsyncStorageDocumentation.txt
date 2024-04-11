@@ -1,0 +1,18 @@
+AsyncStorage Documentation
+-------------------------- 
+
+Registro de AsyncStorage utilizados en la aplicación:
+
+1. Nombre del AsyncStorage: "rol"
+   - Descripción: Almacena el nombre del rol del usuario.
+
+2. Nombre del AsyncStorage: "empresa"
+   - Descripción: Almacena el ID de la empresa del usuario.
+
+3. Nombre del AsyncStorage: "sede"
+   - Descripción: Almacena el ID de la sede del usuario.
+
+4. Nombre del AsyncStorage: "usuario"
+   - Descripción: Almacena el ID del usuario.
+
+Nota: Asegúrate de que estos valores se estén utilizando correctamente en toda la aplicación y de documentar cualquier cambio en este archivo.

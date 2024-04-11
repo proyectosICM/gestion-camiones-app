@@ -1,20 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from './screens/login/login';
+import { Redirect } from './screens/login/redirect';
+import { DriverBottomTabBar } from './screens/vistaConductor/driverBottomTabBar';
+import { CamionDetalle } from './common/camionDetalle';
+import { QRScanner } from './common/qrScanner';
+import { CheckListCamion } from './common/checklists/checklistCamion';
 
 export default function App() {
+
+  const Stack = createNativeStackNavigator();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name='Login' component={Login} />
+        <Stack.Screen name='Redirigir' component={Redirect} />
+
+        <Stack.Screen
+          name="Inicio Conductor"
+          component={DriverBottomTabBar}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen name='Scanner' component={QRScanner} />
+        <Stack.Screen name='Detalles' component={CamionDetalle} />
+
+        <Stack.Screen name='CheckList Camion' component={CheckListCamion} /> 
+
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
