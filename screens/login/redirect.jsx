@@ -15,7 +15,7 @@ import { useLogout } from "../../hooks/useLogout";
 
 export function Redirect({ navigation }) {
   const [info, setInfo] = useState();
-  const [user, setUser] = useState(null); 
+  const [user, setUser] = useState(null);
   const [showText, setShowText] = useState(false);
 
   useGetAsyncStorage("username", setUser);
@@ -29,7 +29,7 @@ export function Redirect({ navigation }) {
   }, [user]);
 
   useEffect(() => {
-    const obtenerDatosUser = async () => { 
+    const obtenerDatosUser = async () => {
       if (info) {
         await AsyncStorage.setItem("rol", info.rolesModel.nombre);
         await AsyncStorage.setItem("empresa", info.empresasModel.id.toString());

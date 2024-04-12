@@ -1,13 +1,19 @@
-import React from "react";
-import { Alert, ScrollView, View } from "react-native";
-import { Card } from "react-native-elements";
+import React, { useState } from "react";
+import { Alert, ScrollView, Text, View } from "react-native";
+import { Button, Card, Icon } from "react-native-elements";
 import { generalStyles } from "../../styles/generalStyles";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useGetAsyncStorage } from "../../hooks/asyncStorageUtils";
-import { checklistCamionURL, checklistCarretaURL, rgsURL } from "../../api/apiurls";
+import { checklistCamionURL, checklistCarretaURL, rgsURL, usuarioURL } from "../../api/apiurls";
+import { carretaChecklistItems } from "./checklistDataArrays/carretaChecklistItems";
+import { camionChecklistItems } from "./checklistDataArrays/camionChecklistItems";
+import { useAgregarElemento } from "../../hooks/useAgregarElemento";
+import { useCustomAlert } from "../../hooks/useCustomAlert ";
+import { useEditarUnElemento } from "../../hooks/useEditarUnElemento";
 
 export function VerificacionDatosEnvio() {
   const navigation = useNavigation();
+  const showAlert = useCustomAlert();
   const route = useRoute();
 
   const datos = route.params.datos;
@@ -15,15 +21,18 @@ export function VerificacionDatosEnvio() {
 
   const tipoVehiculo = route.params.tipoVehiculo;
   const tablesD = route.params.tablesD;
-  const ide = route.params.ide;
 
+  const [usuario, setUsuario] = useState();
   const [empresa, setEmpresa] = useState();
   const [sede, setSede] = useState();
   const [camionid, setCamionid] = useState();
+  const [carretaid, setCarretaid] = useState();
 
+  useGetAsyncStorage("usuario", setUsuario);
   useGetAsyncStorage("empresa", setEmpresa);
   useGetAsyncStorage("sede", setSede);
   useGetAsyncStorage("camionid", setCamionid);
+  useGetAsyncStorage("carretaid", setCarretaid);
 
   const convertirAMinutos = (segundos) => {
     const minutos = Math.floor(segundos / 60);
@@ -36,6 +45,18 @@ export function VerificacionDatosEnvio() {
     carreta: checklistCarretaURL,
   };
 
+  const handleYes = () => {
+    navigation.navigate("Adjuntar Fotos", {  clc: "continuar" });
+  };
+
+  const handleNo = () => {
+    if (tipoVehiculo == "camion") {
+      navigation.navigate("Inicio", { tipoVehiculo: "carreta" });
+    } else if (tipoVehiculo == "carreta") {
+      navigation.navigate("Inicio", { tipoVehiculo: "camion" });
+    }
+  };
+
   const handleEnviar = async () => {
     try {
       const requestDataChecklist = {
@@ -43,7 +64,7 @@ export function VerificacionDatosEnvio() {
         tiempo: tiempo,
         ...datos.reduce((acc, dataGroup, index) => {
           dataGroup.forEach((dataItem, itemIndex) => {
-            const atributo = tablesCam[index].datos[itemIndex].atributo;
+            const atributo = tablesD[index].datos[itemIndex].atributo;
             acc[atributo] = dataItem;
           });
           return acc;
@@ -53,39 +74,23 @@ export function VerificacionDatosEnvio() {
       const url = urlMap[tipoVehiculo];
       await useAgregarElemento(url, requestDataChecklist);
 
-      Alert.alert(
-        "Desea Agregar fotos",
-        "",
-        [
-          {
-            text: "Sí",
-            onPress: () => navigation.navigate("Adjuntar Fotos", { rgs: RGS.data.id, clc: "continuar" }), 
-          },
-          {
-            text: "No",
-            onPress: () => navigation.navigate("VerificacionCarreta"), 
-            style: "cancel",
-          },
-        ],
-        { cancelable: false }
-      );
-
-      if(tipoVehiculo == "camion"){
-
-      } else if (tipoVehiculo == "carreta") {
+      if (tipoVehiculo == "carreta") {
         const requestDataRGS = {
-          usuariosModel: { id: data.id },
-          camionesModel: { id: data.id },
-          carretaModel: { id: data.id },
-          sedesModel: {
-            id: sede,
-          },
-          empresasModel: {
-            id: empresa,
-          },
+          usuariosModel: { id: usuario },
+          camionesModel: { id: camionid },
+          carretasModel: { id: carretaid },
+          empresasModel: { id: empresa },
+          sedesModel: { id: sede },
         };
+
         await useAgregarElemento(rgsURL, requestDataRGS);
       }
+
+      const options = [
+        { text: "Sí", onPress: handleYes },
+        { text: "No", onPress: handleNo, style: "cancel" },
+      ];
+      showAlert("Desea Agregar fotos", "", options);
     } catch (error) {
       console.error(error);
     }

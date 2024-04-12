@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Camera } from "expo-camera";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const QRScanner = ({ cerrar, navigate, tipoVehiculo }) => {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
@@ -17,9 +17,13 @@ export const QRScanner = ({ cerrar, navigate, tipoVehiculo }) => {
   const handleBarCodeScanned = async ({ data }) => {
     setScanned(true);
     cerrar();
+    if (tipoVehiculo == "camion") {
+      await AsyncStorage.setItem("camionid", data);
+    } else if(tipoVehiculo == "carreta") {
+      await AsyncStorage.setItem("carretaid", data);
+    }
 
-    await AsyncStorage.setItem("camionid", data);
-    navigate("Detalles", { tipoVehiculo: tipoVehiculo, camionid: data });
+    navigate("Detalles", { tipoVehiculo: tipoVehiculo });
   };
 
   if (hasCameraPermission === null) {
@@ -31,10 +35,7 @@ export const QRScanner = ({ cerrar, navigate, tipoVehiculo }) => {
 
   return (
     <View style={styles.container}>
-      <Camera
-        style={styles.preview}
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-      />
+      <Camera style={styles.preview} onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} />
       {scanned && (
         <TouchableOpacity onPress={() => setScanned(false)} style={styles.scanAgain}>
           <Text style={styles.scanAgainText}>Escanear de nuevo</Text>
@@ -48,26 +49,25 @@ export const QRScanner = ({ cerrar, navigate, tipoVehiculo }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      flexDirection: 'column',
-      backgroundColor: 'black',
-    },
-    preview: {
-      flex: 1,
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-    },
-    scanAgain: {
-      padding: 15, 
-      backgroundColor: 'white',
-      margin: 20,
-      borderRadius: 10,
-      alignItems: 'center',
-    },
-    scanAgainText: {
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-  });
-  
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: "black",
+  },
+  preview: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  scanAgain: {
+    padding: 15,
+    backgroundColor: "white",
+    margin: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  scanAgainText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+});

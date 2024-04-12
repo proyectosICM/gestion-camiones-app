@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome5, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { VerificacionCamion } from "./verificacionCamion";
-import { CamionSeleccionado } from "./camionSeleccionado";
 import { Cuenta } from "../../common/cuenta";
+import { CamionAsignado } from "./camionAsignado";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +27,7 @@ export function DriverBottomTabBar({ navigation }) {
 
       <Tab.Screen
         name="Asignado"
-        component={CamionSeleccionado}
+        component={CamionAsignado}
         options={{
           tabBarIcon: ({ color, size }) => <FontAwesome5 name="truck" color={color} size={size} />,
         }}

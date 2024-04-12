@@ -10,10 +10,9 @@ import { Button } from 'react-native-elements';
 export function CheckListCamion() {
   const navigate = useNavigation();
  
-  const route = useRoute();
+  const route = useRoute(); 
   const tipoVehiculo = route.params.tipoVehiculo;
   const tables = route.params.tablesD;
-  const ide = route.params.ide;
 
   const [currentTable, setCurrentTable] = useState(0);
   const [marcar, setMarcar] = useState(() => tables.map((table) => Array(table.datos.length).fill(null)));
@@ -49,7 +48,7 @@ export function CheckListCamion() {
   }, []);
 
   const handleEnviar = () => {
-    navigate.navigate("CheckDatos", { datos: marcar, tiempo: tiempo, tipoVehiculo: tipoVehiculo, tablesD: tables, ide: ide }); 
+    navigate.navigate("CheckDatos", { datos: marcar, tiempo: tiempo, tipoVehiculo: tipoVehiculo, tablesD: tables}); 
   };
 
 

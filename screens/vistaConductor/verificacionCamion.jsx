@@ -15,9 +15,9 @@ export function VerificacionCamion({ navigation }) {
   const handleAbrirCamera = () => {
     setAbrir(true);
   };
-
+ 
   const handleCerrarCamera = () => {
-    setAbrir(false); 
+    setAbrir(false);
   };
 
   return abrir ? (
@@ -25,8 +25,9 @@ export function VerificacionCamion({ navigation }) {
   ) : (
     <ImageBackground source={fondoGeneral} style={generalStyles.backgroundImage}>
       <View style={generalStyles.container}>
-        <Image source={QR_Logo} style={{ width: 100, height: 100, marginVertical: 20 }} />
-        <Text style={generalStyles.tittleText}>Escanear QR de camion {tipoVehiculo}</Text>
+        {tipoVehiculo == "camion" && <Image source={QR_Logo} style={{ width: 100, height: 100, marginVertical: 20 }} />}
+
+        <Text style={generalStyles.tittleText}>Escanear QR de {tipoVehiculo}</Text>
         <Text
           style={{
             textAlign: "center",
@@ -36,7 +37,7 @@ export function VerificacionCamion({ navigation }) {
             color: ColorTexto,
           }}
         >
-          Escanee el codigo QR de un camion para empezar a realizar el CheckList
+          {tipoVehiculo == "camion" ? "scanee el codigo QR de un camion para empezar a realizar el CheckList" : "Escanee el codigo QR de una carreta"}
         </Text>
         <Button
           title=" Abrir Camara "

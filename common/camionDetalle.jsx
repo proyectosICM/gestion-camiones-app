@@ -7,17 +7,26 @@ import { useListarElementos } from "../hooks/useListUtils";
 import { camionesURL } from "../api/apiurls";
 import { Button } from "react-native-elements";
 import { carretaChecklistItems } from "./checklists/checklistDataArrays/carretaChecklistItems";
+import { camionChecklistItems } from "./checklists/checklistDataArrays/camionChecklistItems";
+import { useGetAsyncStorage } from "../hooks/asyncStorageUtils";
 
 export function CamionDetalle({ navigation }) {
   const [camionData, setCamionData] = useState();
-
+  const [camionid, setCamionid] = useState();
+  const [carretaid, setCarretaid] = useState();
   const route = useRoute();
   const tipoVehiculo = route.params.tipoVehiculo;
-  const camionid = route.params.camionid;
-
+  useGetAsyncStorage("camionid", setCamionid);
+  useGetAsyncStorage("carretaid", setCarretaid);
   // const ListarCL = useListarElementos(`${baseURL}RGS/${camionid}`, setCamion);
 
-  const ListarCamion = useListarElementos(`${camionesURL}/${camionid}`, setCamionData);
+  const idMap = {
+    camion: camionid,
+    carreta: carretaid,
+  };
+
+  const idData = idMap[tipoVehiculo];
+  const ListarCamion = useListarElementos(`${camionesURL}/${idData}`, setCamionData);
 
   useEffect(() => {
     ListarCamion();
@@ -25,7 +34,7 @@ export function CamionDetalle({ navigation }) {
 
   const handleListChecklist = () => {
     if (tipoVehiculo == "camion") {
-      navigation.navigate("CheckList Camion", { tipoVehiculo: tipoVehiculo, tablesD: carretaChecklistItems });
+      navigation.navigate("CheckList Camion", { tipoVehiculo: tipoVehiculo, tablesD: camionChecklistItems });
     } else if (tipoVehiculo == "carreta") {
       navigation.navigate("CheckList Camion", { tipoVehiculo: tipoVehiculo, tablesD: carretaChecklistItems });
     }
