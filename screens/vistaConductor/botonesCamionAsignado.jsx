@@ -30,10 +30,10 @@ export function BotonesCamionAsignado({datos}) {
         <View style={localStyles.buttonContainer}>
           <Button
             title={"Reportar una falla"}
-            titleStyle={localStyles.buttonText}
+            titleStyle={localStyles.buttonText} 
             buttonStyle={localStyles.button}
             icon={<Icon name="build" size={20} color={ColorIcono} />}
-            onPress={() => navigation.navigate("Adjuntar Fotos", { rgs: datos.id })}
+            onPress={() => navigation.navigate("Adjuntar Fotos", { datos: datos })}
           />
 
           <Button

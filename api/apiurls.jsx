@@ -27,3 +27,7 @@ export const obsxRgsURL = `${obsURL}/xRGS`;
 
 //Registro Cambio de llantas de Salidas
 export const cambioLlantasURL = `${baseURL}cambio-llantas`;
+
+//Observaciones
+export const FallasImagenURL = `${baseURL}fallas-imagen`;
+export const EnviarImagenURL = `${baseURL}fallas-imagen/guardar-imagen`;

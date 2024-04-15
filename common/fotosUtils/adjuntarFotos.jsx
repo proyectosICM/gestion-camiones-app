@@ -6,18 +6,29 @@ import { Button } from "react-native-elements";
 import { Camera } from "expo-camera";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useGetAsyncStorage } from "../../hooks/asyncStorageUtils";
+import { useAgregarElemento } from "../../hooks/useAgregarElemento";
+import { EnviarImagenURL, FallasImagenURL } from "../../api/apiurls";
+import axios from "axios";
 
 export function AdjuntarFotos() {
   const route = useRoute();
   const navigation = useNavigation();
 
+  const datos = route.params.datos;
+
+  console.log(datos);
+
   const [image, setImage] = useState(null);
   const [observacion, setObservacion] = useState(null);
   const [camera, setCamera] = useState(null);
   const [usuario, setUsuario] = useState();
+  const [empresa, setEmpresa] = useState();
+  const [token, setToken] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   useGetAsyncStorage("usuario", setUsuario);
+  useGetAsyncStorage("empresa", setEmpresa);
+  useGetAsyncStorage("token", setToken);
 
   const handleImagePicker = async () => {
     if (camera) {
@@ -42,13 +53,60 @@ export function AdjuntarFotos() {
     console.log("Si");
   };
 
-  const handleEnviar = () => {
+  const handleEnviar = async () => {
     if (image && observacion) {
       try {
         setIsLoading(true);
+
+        const formData = new FormData();
+        formData.append("file", {
+          uri: image,
+          type: "image/jpeg",
+          name: "nombre_imagen.jpg",
+        });
+        formData.append("observacion", observacion);
+        formData.append("empresaId", empresa);
+        formData.append("camionId", 1); 
+
+        const response = await axios.post(EnviarImagenURL, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        const requestData = {
+          urlImage: response.data,
+          observacion: observacion,
+          usuariosModel: {
+            id: 1,
+          },
+          empresaModel: {
+            id: empresa,
+          },
+          checklistCamion: null,
+          checkListCarretaModel: null,
+        };
+
+        useAgregarElemento(FallasImagenURL, requestData);
+
+        console.log("Respuesta del servidor:", response.data);
+        setIsLoading(false);
       } catch (error) {
         console.log("Error al enviar la imagen:", error);
         setIsLoading(false);
+        console.log("2");
+
+        if (error.response) {
+          // Si hay una respuesta del servidor, mostrar el mensaje de error
+          console.error("Mensaje de error:", error.response.data);
+        } else if (error.request) {
+          // Si la solicitud se realizó pero no se recibió respuesta, mostrar un mensaje de error genérico
+          console.error("No se recibió respuesta del servidor");
+        } else {
+          // Si ocurrió un error durante la configuración de la solicitud, mostrar el error
+          console.error("Error de configuración de la solicitud:", error.message);
+        }
       }
     } else {
       Alert.alert("Agregue detalle a la observacion", "Por favor describa la falla");
