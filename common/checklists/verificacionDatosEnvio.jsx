@@ -8,7 +8,7 @@ import { checklistCamionURL, checklistCarretaURL, rgsURL, usuarioURL } from "../
 import { carretaChecklistItems } from "./checklistDataArrays/carretaChecklistItems";
 import { camionChecklistItems } from "./checklistDataArrays/camionChecklistItems";
 import { useAgregarElemento } from "../../hooks/useAgregarElemento";
-import { useCustomAlert } from "../../hooks/useCustomAlert ";
+import { useCustomAlert } from "../../hooks/useCustomAlert "; 
 import { useEditarUnElemento } from "../../hooks/useEditarUnElemento";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

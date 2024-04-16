@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { loginURL } from "../api/apiurls";
 
-export const useAuth = () => {
+export const useAuth = () => { 
 
   const navigation = useNavigation();
   const login = async (username, password, setError) => {

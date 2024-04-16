@@ -4,24 +4,34 @@ import { generalStyles } from "../../styles/generalStyles";
 import { ColorIcono, ColorTexto, QR_Logo, fondoGeneral } from "../../styles/paletaColores";
 import { Button } from "react-native-elements";
 import { QRScanner } from "../../common/qrScanner";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export function VerificacionCamion({ navigation }) {
+export function VerificacionCamion() {
+  const navigation = useNavigation();
+  const route = useRoute();
+
   const [abrir, setAbrir] = useState(false);
 
-  const route = useRoute();
-  const tipoVehiculo = route.params ? route.params.tipoVehiculo : "";
+  const tipoVehiculoParam = route.params ? route.params.tipoVehiculo : "";
+
+  useEffect(() => {
+    // Almacenamiento en AsyncStorage al entrar al componente
+    AsyncStorage.setItem("tipoVehiculo", tipoVehiculoParam)
+      .then(() => console.log("Tipo de vehículo guardado exitosamente"))
+      .catch(error => console.error("Error al guardar tipo de vehículo:", error));
+  }, [tipoVehiculoParam]); 
 
   const handleAbrirCamera = () => {
     setAbrir(true);
   };
- 
+
   const handleCerrarCamera = () => {
     setAbrir(false);
   };
 
   return abrir ? (
-    <QRScanner cerrar={handleCerrarCamera} navigate={navigation.navigate} tipoVehiculo={tipoVehiculo} />
+    <QRScanner cerrar={handleCerrarCamera} tipoVehiculo={tipoVehiculo} />
   ) : (
     <ImageBackground source={fondoGeneral} style={generalStyles.backgroundImage}>
       <View style={generalStyles.container}>

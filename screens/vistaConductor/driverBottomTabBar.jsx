@@ -6,16 +6,16 @@ import { CamionAsignado } from "./camionAsignado";
 
 const Tab = createBottomTabNavigator();
 
-export function DriverBottomTabBar({ navigation }) {
+export function DriverBottomTabBar() {
  
   return (
     <Tab.Navigator 
       screenOptions={{
-        tabBarActiveTintColor: "#A69677",
+        tabBarActiveTintColor: "#A69677", 
         tabBarInactiveTintColor: "#9CA4A6", 
       }}
     >
-      <Tab.Screen
+      <Tab.Screen 
         name="Inicio"
         component={VerificacionCamion}
         initialParams={{ tipoVehiculo: 'camion' }} 

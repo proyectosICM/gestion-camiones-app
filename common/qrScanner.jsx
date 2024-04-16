@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Camera } from "expo-camera";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
-export const QRScanner = ({ cerrar, navigate, tipoVehiculo }) => {
+export const QRScanner = ({ cerrar, tipoVehiculo }) => {
+  const navigation = useNavigation();
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -23,7 +25,7 @@ export const QRScanner = ({ cerrar, navigate, tipoVehiculo }) => {
       await AsyncStorage.setItem("carretaid", data);
     }
 
-    navigate("Detalles", { tipoVehiculo: tipoVehiculo });
+    navigation.navigate("Detalles", { tipoVehiculo: tipoVehiculo });
   };
 
   if (hasCameraPermission === null) {

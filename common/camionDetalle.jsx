@@ -14,11 +14,12 @@ export function CamionDetalle({ navigation }) {
   const [camionData, setCamionData] = useState();
   const [camionid, setCamionid] = useState();
   const [carretaid, setCarretaid] = useState();
+  
   const route = useRoute();
   const tipoVehiculo = route.params.tipoVehiculo;
+
   useGetAsyncStorage("camionid", setCamionid);
   useGetAsyncStorage("carretaid", setCarretaid);
-  // const ListarCL = useListarElementos(`${baseURL}RGS/${camionid}`, setCamion);
 
   const idMap = {
     camion: camionid,

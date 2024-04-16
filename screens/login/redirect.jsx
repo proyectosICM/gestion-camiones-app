@@ -13,9 +13,10 @@ import { useListarElementos } from "../../hooks/useListUtils";
 import { generalStyles } from "../../styles/generalStyles";
 import { useLogout } from "../../hooks/useLogout";
 
-export function Redirect({ navigation }) {
+export function Redirect() {
+  const navigation = useNavigation();
   const [info, setInfo] = useState();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); 
   const [showText, setShowText] = useState(false);
 
   useGetAsyncStorage("username", setUser);

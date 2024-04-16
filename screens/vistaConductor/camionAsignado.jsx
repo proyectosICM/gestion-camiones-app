@@ -18,8 +18,6 @@ export function CamionAsignado() {
     ListarInfoRGS();
   }, [ListarInfoRGS]);
 
-  console.log(rgsData);
-  console.log(`${rgsByUserAndStateURL}?usuarioId=${usuario}&enUso=1`);
   return (
     <ImageBackground source={fondoGeneral} style={generalStyles.backgroundImage}>
       <View style={generalStyles.container}> 

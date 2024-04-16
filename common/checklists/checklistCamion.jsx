@@ -3,7 +3,7 @@ import { ImageBackground, Text, View } from "react-native";
 import { fondoGeneral } from "../../styles/paletaColores";
 import { generalStyles } from "../../styles/generalStyles";
 import { ScrollView } from "react-native";
-import { TablaChecklist } from "./tablaChecklist";
+import { TablaChecklist } from "./tablaChecklist"; 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Button } from 'react-native-elements';
 

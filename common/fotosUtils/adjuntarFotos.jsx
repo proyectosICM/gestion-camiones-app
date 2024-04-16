@@ -3,7 +3,7 @@ import { Alert, Image, ImageBackground, StyleSheet, Text, TextInput, TouchableOp
 import { fondoGeneral } from "../../styles/paletaColores";
 import { generalStyles } from "../../styles/generalStyles";
 import { Button } from "react-native-elements";
-import { Camera } from "expo-camera";
+import { Camera } from "expo-camera"; 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useGetAsyncStorage } from "../../hooks/asyncStorageUtils";
 import { useAgregarElemento } from "../../hooks/useAgregarElemento";

@@ -6,7 +6,7 @@ import { useAuth } from "../../hooks/useAuth";
 
 const backgroundImage = require("../login/loginFondo.jpg");
 
-export default function Login({ navigation }) {
+export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
