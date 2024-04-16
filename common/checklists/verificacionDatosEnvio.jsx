@@ -10,6 +10,7 @@ import { camionChecklistItems } from "./checklistDataArrays/camionChecklistItems
 import { useAgregarElemento } from "../../hooks/useAgregarElemento";
 import { useCustomAlert } from "../../hooks/useCustomAlert ";
 import { useEditarUnElemento } from "../../hooks/useEditarUnElemento";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function VerificacionDatosEnvio() {
   const navigation = useNavigation();
@@ -27,12 +28,16 @@ export function VerificacionDatosEnvio() {
   const [sede, setSede] = useState();
   const [camionid, setCamionid] = useState();
   const [carretaid, setCarretaid] = useState();
+  const [camioncl, setCamionCl] = useState();
+  const [carretacl, setCarretaCl] = useState();
 
   useGetAsyncStorage("usuario", setUsuario);
   useGetAsyncStorage("empresa", setEmpresa);
   useGetAsyncStorage("sede", setSede);
   useGetAsyncStorage("camionid", setCamionid);
   useGetAsyncStorage("carretaid", setCarretaid);
+  useGetAsyncStorage("camioncl", setCamionCl);
+  useGetAsyncStorage("carretacl", setCarretaCl);
 
   const convertirAMinutos = (segundos) => {
     const minutos = Math.floor(segundos / 60);
@@ -45,8 +50,20 @@ export function VerificacionDatosEnvio() {
     carreta: checklistCarretaURL,
   };
 
-  const handleYes = () => {
-    navigation.navigate("Adjuntar Fotos", {  clc: "continuar" });
+  const handleYes = (camion, carreta) => {
+    const datosEnvio = {
+      checkListCamionModel: {
+        id: camion,
+      },
+      checkListCarretaModel:
+        tipoVehiculo === "camion"
+          ? null
+          : {
+              id: carreta,
+            },
+    };
+
+    navigation.navigate("Adjuntar Fotos", { datos: datosEnvio });
   };
 
   const handleNo = () => {
@@ -60,7 +77,7 @@ export function VerificacionDatosEnvio() {
   const handleEnviar = async () => {
     try {
       const requestDataChecklist = {
-        camionesModel: { id: camionid },
+        camionesModel: { id: tipoVehiculo == "camion" ?  camionid : carretaid},
         tiempo: tiempo,
         ...datos.reduce((acc, dataGroup, index) => {
           dataGroup.forEach((dataItem, itemIndex) => {
@@ -72,22 +89,34 @@ export function VerificacionDatosEnvio() {
       };
 
       const url = urlMap[tipoVehiculo];
-      await useAgregarElemento(url, requestDataChecklist);
+
+      console.log(url);
+      console.log(requestDataChecklist);
+      const cl = await useAgregarElemento(url, requestDataChecklist);
+
+      if (tipoVehiculo === "camion") {
+        await AsyncStorage.setItem("camioncl", cl.data.id.toString());
+      } else if (tipoVehiculo === "carreta") {
+        await AsyncStorage.setItem("carretacl", cl.data.id.toString());
+      }
 
       if (tipoVehiculo == "carreta") {
+     
         const requestDataRGS = {
           usuariosModel: { id: usuario },
-          camionesModel: { id: camionid },
-          carretasModel: { id: carretaid },
+          checkListCamionModel: { id: camioncl },
+          checkListCarretaModel: { id: cl.data.id },
           empresasModel: { id: empresa },
           sedesModel: { id: sede },
+          enUso: true
         };
-
+  
         await useAgregarElemento(rgsURL, requestDataRGS);
+
       }
 
       const options = [
-        { text: "Sí", onPress: handleYes },
+        { text: "Sí", onPress: handleYes(camionid, carretaid) },
         { text: "No", onPress: handleNo, style: "cancel" },
       ];
       showAlert("Desea Agregar fotos", "", options);

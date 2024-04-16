@@ -24,12 +24,12 @@ export function CamionAsignado() {
     <ImageBackground source={fondoGeneral} style={generalStyles.backgroundImage}>
       <View style={generalStyles.container}>
         { rgsData ? (
-          <>
+          <> 
             <Text style={generalStyles.tittleText}>
-              Placa Camion: {rgsData && rgsData.camionesModel.placa}
+              Placa Camion: {rgsData && rgsData.checkListCamionModel.camionesModel.placa}
             </Text>
             <Text style={generalStyles.tittleText}>
-              Placa Tracto: {rgsData && rgsData.carretasModel.placa}
+              Placa Tracto: {rgsData && rgsData.checkListCarretaModel.camionesModel.placa}
             </Text>
     {       <BotonesCamionAsignado datos={rgsData} /> }
           </>

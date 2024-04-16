@@ -66,7 +66,7 @@ export function AdjuntarFotos() {
         });
         formData.append("observacion", observacion);
         formData.append("empresaId", empresa);
-        formData.append("camionId", 1); 
+        formData.append("camionId", 1);
 
         const response = await axios.post(EnviarImagenURL, formData, {
           headers: {
@@ -74,7 +74,8 @@ export function AdjuntarFotos() {
             "Content-Type": "multipart/form-data",
           },
         });
-
+        // console.log("datos recibidos")
+        // console.log( datos)
         const requestData = {
           urlImage: response.data,
           observacion: observacion,
@@ -84,28 +85,39 @@ export function AdjuntarFotos() {
           empresaModel: {
             id: empresa,
           },
-          checklistCamion: null,
-          checkListCarretaModel: null,
+          checkListCamionModel: {
+            id: datos.checkListCamionModel.id,
+          },
+          checkListCarretaModel: datos.checkListCarretaModel
+            ? {
+                id: datos.checkListCarretaModel.id,
+              }
+            : null,
         };
+        console.log("Datos a cargar:", requestData);
 
         useAgregarElemento(FallasImagenURL, requestData);
 
-        console.log("Respuesta del servidor:", response.data);
+        // console.log("Respuesta del servidor:", response.data);
+
         setIsLoading(false);
       } catch (error) {
         console.log("Error al enviar la imagen:", error);
         setIsLoading(false);
-        console.log("2");
 
         if (error.response) {
           // Si hay una respuesta del servidor, mostrar el mensaje de error
           console.error("Mensaje de error:", error.response.data);
+          console.log("1");
         } else if (error.request) {
           // Si la solicitud se realizó pero no se recibió respuesta, mostrar un mensaje de error genérico
           console.error("No se recibió respuesta del servidor");
+          console.log("2");
         } else {
           // Si ocurrió un error durante la configuración de la solicitud, mostrar el error
           console.error("Error de configuración de la solicitud:", error.message);
+
+          console.log("3");
         }
       }
     } else {

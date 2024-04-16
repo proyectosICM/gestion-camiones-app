@@ -13,7 +13,7 @@ import { useAgregarElemento } from "../../../hooks/useAgregarElemento";
 import { generalStyles } from "../../../styles/generalStyles";
 import { cambioLlantasURL, obsURL, obsxRgsURL } from './../../../api/apiurls';
 
-export function CambiarCamion() {
+export function CambiarCamion() { 
   const route = useRoute();
   const datos = route.params.datos;
   const rows = [[1, , 2], [[3], 4, [5], 6], [[7], 8, [9], 10], ["RP"]];
@@ -37,7 +37,7 @@ export function CambiarCamion() {
     console.log("Id de RGS", datos.id);
     const request = {
       camionesModel: {
-        id: datos.camionesModel.id,
+        id: datos.checkListCamionModel.camionesModel.id,
       },
       nroLlanta: llantaSelect,
       observacion: texto,

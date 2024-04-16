@@ -4,7 +4,7 @@ import { Button, Icon } from "react-native-elements";
 import { BotonColorOscuro, ColorIcono, ColorTextoBoton } from "../../styles/paletaColores";
 import { useNavigation } from "@react-navigation/native";
 
-export function BotonesCamionAsignado({datos}) {
+export function BotonesCamionAsignado({datos}) { 
   const navigation = useNavigation();
   return (
     <>
@@ -12,7 +12,7 @@ export function BotonesCamionAsignado({datos}) {
         <View style={localStyles.buttonContainer}>
           <Button
             title={"Informacion detallada del camion"}
-            titleStyle={localStyles.buttonText}
+            titleStyle={localStyles.buttonText} 
             buttonStyle={localStyles.button}
             onPress={() => navigation.navigate("InfoDetallada", { datos: datos })}
             icon={<Icon name="info" size={20} color={ColorIcono} />}

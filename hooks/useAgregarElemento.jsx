@@ -15,6 +15,7 @@ export async function useAgregarElemento(url, requestData) {
       });
       return response; // Retorna el resultado de la solicitud POST
     } catch (error) {
+      console.log("dd")
       throw error; // 
     }
   }

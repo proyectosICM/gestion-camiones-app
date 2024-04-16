@@ -12,17 +12,17 @@ export function InfoDetallada() {
     <ImageBackground source={fondoGeneral} style={generalStyles.backgroundImage}>
       <View style={generalStyles.container}>
         <PanelCDetalle
-          tipoc={datos.camionesModel.tiposCModel.nombre}
-          placa={datos.camionesModel.placa}
-          marca={datos.camionesModel.marcasModel.nombre}
-          modelo={datos.camionesModel.modeloModel.nombre}
+          tipoc={datos.checkListCamionModel.camionesModel.tiposCModel.nombre}
+          placa={datos.checkListCamionModel.camionesModel.placa}
+          marca={datos.checkListCamionModel.camionesModel.marcasModel.nombre}
+          modelo={datos.checkListCamionModel.camionesModel.modeloModel.nombre}
         />
 
         <PanelCDetalle
-          tipoc={datos.carretasModel.tiposCModel.nombre}
-          placa={datos.carretasModel.placa}
-          marca={datos.carretasModel.marcasModel.nombre}
-          modelo={datos.carretasModel.modeloModel.nombre}
+          tipoc={datos.checkListCarretaModel.camionesModel.tiposCModel.nombre}
+          placa={datos.checkListCarretaModel.camionesModel.placa}
+          marca={datos.checkListCarretaModel.camionesModel.marcasModel.nombre}
+          modelo={datos.checkListCarretaModel.camionesModel.modeloModel.nombre}
         />
       </View>
     </ImageBackground>

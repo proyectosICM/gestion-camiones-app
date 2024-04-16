@@ -33,19 +33,19 @@ export function CambiarCarreta() {
   const handleEnviar = async () => {
     const request = {
       camionesModel: {
-        id: datos.rgsModel.checkListCarretaModel.camionesModel.id,
+        id: datos.checkListCarretaModel.camionesModel.id,
       },
       nroLlanta: llantaSelect,
       observacion: texto,
       rgsModel: {
-        id: datos.rgsModel.id,
+        id: datos.id,
       },
     };
 
     const requestObs = {
       nameObs: `Cambio de llanta registrado: ${texto} Llanta ${llantaSelect} Carreta`,
       rgsModel: {
-        id: datos.rgsModel.id,
+        id: datos.id,
       },
     };
 
