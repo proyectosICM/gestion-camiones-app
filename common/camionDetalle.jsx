@@ -14,9 +14,11 @@ export function CamionDetalle({ navigation }) {
   const [camionData, setCamionData] = useState();
   const [camionid, setCamionid] = useState();
   const [carretaid, setCarretaid] = useState();
-  
+
   const route = useRoute();
-  const tipoVehiculo = route.params.tipoVehiculo;
+
+  const [tipoVehiculo, setTipoVehiculo] = useState(null);
+  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
 
   useGetAsyncStorage("camionid", setCamionid);
   useGetAsyncStorage("carretaid", setCarretaid);
@@ -35,9 +37,9 @@ export function CamionDetalle({ navigation }) {
 
   const handleListChecklist = () => {
     if (tipoVehiculo == "camion") {
-      navigation.navigate("CheckList Camion", { tipoVehiculo: tipoVehiculo, tablesD: camionChecklistItems });
+      navigation.navigate("CheckList Camion", { tablesD: camionChecklistItems });
     } else if (tipoVehiculo == "carreta") {
-      navigation.navigate("CheckList Camion", { tipoVehiculo: tipoVehiculo, tablesD: carretaChecklistItems });
+      navigation.navigate("CheckList Camion", { tablesD: carretaChecklistItems });
     }
   };
 

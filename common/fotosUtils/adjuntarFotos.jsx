@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Image, ImageBackground, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { fondoGeneral } from "../../styles/paletaColores";
 import { generalStyles } from "../../styles/generalStyles";
 import { Button } from "react-native-elements";
-import { Camera } from "expo-camera"; 
+import { Camera } from "expo-camera";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useGetAsyncStorage } from "../../hooks/asyncStorageUtils";
 import { useAgregarElemento } from "../../hooks/useAgregarElemento";
 import { EnviarImagenURL, FallasImagenURL } from "../../api/apiurls";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function AdjuntarFotos() {
   const route = useRoute();
@@ -16,8 +17,18 @@ export function AdjuntarFotos() {
 
   const datos = route.params.datos;
   const clop = route.params.clop;
-  const tipoVehiculo = route.params.tipoVehiculo;
-  console.log(datos);
+  const [tipoVehiculo, setTipoVehiculo] = useState(null);
+  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
+  console.log("Llego")
+  useEffect(() => {
+
+   /* if (tipoVehiculo == "camion") {
+      console.log("Si")
+      AsyncStorage.setItem("tipoVehiculo", "carreta");
+    } else if (tipoVehiculo == "carreta") {
+      AsyncStorage.setItem("tipoVehiculo", "camion");
+    }*/
+  })
 
   const [image, setImage] = useState(null);
   const [observacion, setObservacion] = useState(null);
@@ -50,8 +61,6 @@ export function AdjuntarFotos() {
     // Por ejemplo, puedes usar un componente de visor de imágenes.
     // Puedes abrir un modal o navegar a una nueva pantalla para mostrar la imagen en pantalla completa.
     // Esto depende de la implementación específica de tu aplicación.
-
-    console.log("Si");
   };
 
   const handleEnviar = async () => {
@@ -75,8 +84,7 @@ export function AdjuntarFotos() {
             "Content-Type": "multipart/form-data",
           },
         });
-        // console.log("datos recibidos")
-        // console.log( datos)
+
         const requestData = {
           urlImage: response.data,
           observacion: observacion,
@@ -94,8 +102,7 @@ export function AdjuntarFotos() {
                 id: datos.checkListCarretaModel.id,
               }
             : null,
-        };
-        console.log("Datos a cargar:", requestData);
+        }
 
         useAgregarElemento(FallasImagenURL, requestData);
 
@@ -112,16 +119,12 @@ export function AdjuntarFotos() {
         if (error.response) {
           // Si hay una respuesta del servidor, mostrar el mensaje de error
           console.error("Mensaje de error:", error.response.data);
-          console.log("1");
         } else if (error.request) {
           // Si la solicitud se realizó pero no se recibió respuesta, mostrar un mensaje de error genérico
           console.error("No se recibió respuesta del servidor");
-          console.log("2");
         } else {
           // Si ocurrió un error durante la configuración de la solicitud, mostrar el error
           console.error("Error de configuración de la solicitud:", error.message);
-
-          console.log("3");
         }
       }
     } else {
@@ -135,11 +138,14 @@ export function AdjuntarFotos() {
   };
 
   const handleContinueChecklist = () => {
+    console.log("Se ejecuta")
     if (tipoVehiculo == "camion") {
-      navigation.navigate("Inicio", { tipoVehiculo: "carreta" });
+      //AsyncStorage.setItem("tipoVehiculo", "carreta");
+      navigation.navigate("Inicio");
     } else if (tipoVehiculo == "carreta") {
-      navigation.navigate("Inicio", { tipoVehiculo: "camion" });
-    }
+      //AsyncStorage.setItem("tipoVehiculo", "camion");
+      navigation.navigate("Inicio");
+    } 
   };
 
   return (

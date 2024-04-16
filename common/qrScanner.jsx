@@ -3,12 +3,16 @@ import { Camera } from "expo-camera";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { useGetAsyncStorage } from "../hooks/asyncStorageUtils";
 
-export const QRScanner = ({ cerrar, tipoVehiculo }) => {
+export const QRScanner = ({ cerrar }) => {
   const navigation = useNavigation();
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
+  const [tipoVehiculo, setTipoVehiculo] = useState(null);
+  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo); 
+  
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();

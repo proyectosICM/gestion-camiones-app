@@ -3,15 +3,17 @@ import { ImageBackground, Text, View } from "react-native";
 import { fondoGeneral } from "../../styles/paletaColores";
 import { generalStyles } from "../../styles/generalStyles";
 import { ScrollView } from "react-native";
-import { TablaChecklist } from "./tablaChecklist"; 
+import { TablaChecklist } from "./tablaChecklist";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Button } from 'react-native-elements';
+import { Button } from "react-native-elements";
+import { useGetAsyncStorage } from "../../hooks/asyncStorageUtils";
 
 export function CheckListCamion() {
   const navigate = useNavigation();
- 
-  const route = useRoute(); 
-  const tipoVehiculo = route.params.tipoVehiculo;
+
+  const route = useRoute();
+  const [tipoVehiculo, setTipoVehiculo] = useState(null);
+  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
   const tables = route.params.tablesD;
 
   const [currentTable, setCurrentTable] = useState(0);
@@ -43,14 +45,13 @@ export function CheckListCamion() {
   };
 
   useEffect(() => {
-    const interval = setInterval(actualizarTiempo, 1000); 
-    return () => clearInterval(interval); 
+    const interval = setInterval(actualizarTiempo, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleEnviar = () => {
-    navigate.navigate("CheckDatos", { datos: marcar, tiempo: tiempo, tipoVehiculo: tipoVehiculo, tablesD: tables}); 
+    navigate.navigate("CheckDatos", { datos: marcar, tiempo: tiempo, tablesD: tables });
   };
-
 
   return (
     <ImageBackground source={fondoGeneral} style={generalStyles.backgroundImage}>

@@ -3,11 +3,13 @@ import { FontAwesome5, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { VerificacionCamion } from "./verificacionCamion";
 import { Cuenta } from "../../common/cuenta";
 import { CamionAsignado } from "./camionAsignado";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Tab = createBottomTabNavigator();
 
 export function DriverBottomTabBar() {
- 
+
   return (
     <Tab.Navigator 
       screenOptions={{
@@ -18,7 +20,7 @@ export function DriverBottomTabBar() {
       <Tab.Screen 
         name="Inicio"
         component={VerificacionCamion}
-        initialParams={{ tipoVehiculo: 'camion' }} 
+        initialParams={{ tipoVehiculoParam: 'camion' }} 
         options={{
           tabBarIcon: ({ color, size }) => <FontAwesome5 name="home" color={color} size={size} />,
         }}

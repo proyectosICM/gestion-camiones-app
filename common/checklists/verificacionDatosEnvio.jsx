@@ -8,7 +8,7 @@ import { checklistCamionURL, checklistCarretaURL, rgsURL, usuarioURL } from "../
 import { carretaChecklistItems } from "./checklistDataArrays/carretaChecklistItems";
 import { camionChecklistItems } from "./checklistDataArrays/camionChecklistItems";
 import { useAgregarElemento } from "../../hooks/useAgregarElemento";
-import { useCustomAlert } from "../../hooks/useCustomAlert "; 
+import { useCustomAlert } from "../../hooks/useCustomAlert ";
 import { useEditarUnElemento } from "../../hooks/useEditarUnElemento";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -19,8 +19,8 @@ export function VerificacionDatosEnvio() {
 
   const datos = route.params.datos;
   const tiempo = route.params.tiempo;
-
-  const tipoVehiculo = route.params.tipoVehiculo;
+  const [tipoVehiculo, setTipoVehiculo] = useState(null);
+  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
   const tablesD = route.params.tablesD;
 
   const [usuario, setUsuario] = useState();
@@ -51,6 +51,7 @@ export function VerificacionDatosEnvio() {
   };
 
   const handleYes = (camion, carreta) => {
+    console.log("hanbdle Si")
     const datosEnvio = {
       checkListCamionModel: {
         id: camion,
@@ -62,28 +63,35 @@ export function VerificacionDatosEnvio() {
               id: carreta,
             },
     };
-
-
+   
     if (tipoVehiculo == "camion") {
-      navigation.navigate("Adjuntar Fotos", { datos: datosEnvio, clop:true, tipoVehiculo: "camion" });
+      console.log("1")
+      AsyncStorage.setItem("tipoVehiculo", "carreta");
+      navigation.navigate("Adjuntar Fotos", { datos: datosEnvio, clop: true });
     } else if (tipoVehiculo == "carreta") {
-      navigation.navigate("Adjuntar Fotos", { datos: datosEnvio, clop:true, tipoVehiculo: "carreta" });
+      console.log("2")
+      AsyncStorage.setItem("tipoVehiculo", "camion");
+      navigation.navigate("Adjuntar Fotos", { datos: datosEnvio, clop: true });
     }
-
   };
 
-  const handleNo = () => {
+  const handleNo = async () => {
+    console.log("hanbdle No")
     if (tipoVehiculo == "camion") {
-      navigation.navigate("Inicio", { tipoVehiculo: "carreta" });
+      console.log("3")
+      AsyncStorage.setItem("tipoVehiculo", "carreta");
+      navigation.navigate("Inicio");
     } else if (tipoVehiculo == "carreta") {
-      navigation.navigate("Inicio", { tipoVehiculo: "camion" });
+      console.log("4")
+      AsyncStorage.setItem("tipoVehiculo", "camion");
+      navigation.navigate("Inicio");
     }
   };
 
   const handleEnviar = async () => {
     try {
       const requestDataChecklist = {
-        camionesModel: { id: tipoVehiculo == "camion" ?  camionid : carretaid},
+        camionesModel: { id: tipoVehiculo == "camion" ? camionid : carretaid },
         tiempo: tiempo,
         ...datos.reduce((acc, dataGroup, index) => {
           dataGroup.forEach((dataItem, itemIndex) => {
@@ -95,9 +103,6 @@ export function VerificacionDatosEnvio() {
       };
 
       const url = urlMap[tipoVehiculo];
-
-      console.log(url);
-      console.log(requestDataChecklist);
       const cl = await useAgregarElemento(url, requestDataChecklist);
 
       if (tipoVehiculo === "camion") {
@@ -107,18 +112,16 @@ export function VerificacionDatosEnvio() {
       }
 
       if (tipoVehiculo == "carreta") {
-     
         const requestDataRGS = {
           usuariosModel: { id: usuario },
           checkListCamionModel: { id: camioncl },
           checkListCarretaModel: { id: cl.data.id },
           empresasModel: { id: empresa },
           sedesModel: { id: sede },
-          enUso: true
+          enUso: true,
         };
-  
-        await useAgregarElemento(rgsURL, requestDataRGS);
 
+        await useAgregarElemento(rgsURL, requestDataRGS);
       }
 
       const options = [

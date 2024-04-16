@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, ImageBackground, Text, View } from "react-native";
 import { generalStyles } from "../../styles/generalStyles";
 import { ColorIcono, ColorTexto, QR_Logo, fondoGeneral } from "../../styles/paletaColores";
@@ -6,22 +6,38 @@ import { Button } from "react-native-elements";
 import { QRScanner } from "../../common/qrScanner";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAutoFetchAsyncStorage, useGetAsyncStorage } from "../../hooks/asyncStorageUtils";
 
 export function VerificacionCamion() {
   const navigation = useNavigation();
   const route = useRoute();
 
   const [abrir, setAbrir] = useState(false);
-
-  const tipoVehiculoParam = route.params ? route.params.tipoVehiculo : "";
-
+  const [tipoVehiculo, setTipoVehiculo] = useState(null);
+  // useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
+  useAutoFetchAsyncStorage("tipoVehiculo", setTipoVehiculo);
+  /*
   useEffect(() => {
-    // Almacenamiento en AsyncStorage al entrar al componente
-    AsyncStorage.setItem("tipoVehiculo", tipoVehiculoParam)
-      .then(() => console.log("Tipo de vehículo guardado exitosamente"))
-      .catch(error => console.error("Error al guardar tipo de vehículo:", error));
-  }, [tipoVehiculoParam]); 
+    const obtenerTipoVehiculoAsyncStorage = async () => {
+      try {
+        const data = await AsyncStorage.getItem("tipoVehiculo");
+        if (!data) {
+          await AsyncStorage.setItem("tipoVehiculo", "camion");
+          setTipoVehiculo("camion");
+        } else {
+          setTipoVehiculo(data);
+        }
+      } catch (error) {
+        console.error("Error al obtener el tipo de vehículo desde AsyncStorage:", error);
+      }
+    };
 
+    const timer = setInterval(() => {
+      obtenerTipoVehiculoAsyncStorage();
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+*/
   const handleAbrirCamera = () => {
     setAbrir(true);
   };
@@ -31,7 +47,7 @@ export function VerificacionCamion() {
   };
 
   return abrir ? (
-    <QRScanner cerrar={handleCerrarCamera} tipoVehiculo={tipoVehiculo} />
+    <QRScanner cerrar={handleCerrarCamera} />
   ) : (
     <ImageBackground source={fondoGeneral} style={generalStyles.backgroundImage}>
       <View style={generalStyles.container}>
