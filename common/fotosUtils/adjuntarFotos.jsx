@@ -15,7 +15,8 @@ export function AdjuntarFotos() {
   const navigation = useNavigation();
 
   const datos = route.params.datos;
-
+  const clop = route.params.clop;
+  const tipoVehiculo = route.params.tipoVehiculo;
   console.log(datos);
 
   const [image, setImage] = useState(null);
@@ -98,6 +99,9 @@ export function AdjuntarFotos() {
 
         useAgregarElemento(FallasImagenURL, requestData);
 
+        // Reiniciar la cámara
+        handleResetCamera();
+
         // console.log("Respuesta del servidor:", response.data);
 
         setIsLoading(false);
@@ -122,6 +126,19 @@ export function AdjuntarFotos() {
       }
     } else {
       Alert.alert("Agregue detalle a la observacion", "Por favor describa la falla");
+    }
+  };
+
+  const handleResetCamera = () => {
+    setImage(null);
+    setObservacion(null);
+  };
+
+  const handleContinueChecklist = () => {
+    if (tipoVehiculo == "camion") {
+      navigation.navigate("Inicio", { tipoVehiculo: "carreta" });
+    } else if (tipoVehiculo == "carreta") {
+      navigation.navigate("Inicio", { tipoVehiculo: "camion" });
     }
   };
 
@@ -156,17 +173,11 @@ export function AdjuntarFotos() {
             <TouchableOpacity onPress={handleImagePicker} style={styles.captureButton}>
               <Text style={styles.captureButtonText}>Tomar Foto</Text>
             </TouchableOpacity>
-            {/* clc == "continuar" && (
-              <TouchableOpacity onPress={() => navigation.navigate("VerificacionCarreta")} style={styles.continuar}>
-                <Text style={styles2.captureButtonText}>Continuar checklist</Text>
+            {clop && (
+              <TouchableOpacity onPress={handleContinueChecklist} style={styles.captureButton}>
+                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Continuar checklist</Text>
               </TouchableOpacity>
-            ) */}
-
-            {/* clc == "cerrar" && (
-              <TouchableOpacity onPress={() => navigation.navigate("Asignado")} style={styles.continuar}>
-                <Text style={styles.captureButtonText}>Cerrar</Text>
-              </TouchableOpacity>
-            )*/}
+            )}
           </View>
         )}
       </View>
@@ -209,7 +220,7 @@ const styles = StyleSheet.create({
     width: "50%",
     alignItems: "center",
     marginHorizontal: "25%",
-    marginVertical: "10%",
+    marginVertical: "2.5%",
   },
   captureButtonText: {
     fontSize: 20,

@@ -63,7 +63,13 @@ export function VerificacionDatosEnvio() {
             },
     };
 
-    navigation.navigate("Adjuntar Fotos", { datos: datosEnvio });
+
+    if (tipoVehiculo == "camion") {
+      navigation.navigate("Adjuntar Fotos", { datos: datosEnvio, clop:true, tipoVehiculo: "camion" });
+    } else if (tipoVehiculo == "carreta") {
+      navigation.navigate("Adjuntar Fotos", { datos: datosEnvio, clop:true, tipoVehiculo: "carreta" });
+    }
+
   };
 
   const handleNo = () => {

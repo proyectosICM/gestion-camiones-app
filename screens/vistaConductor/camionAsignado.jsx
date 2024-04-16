@@ -22,7 +22,7 @@ export function CamionAsignado() {
   console.log(`${rgsByUserAndStateURL}?usuarioId=${usuario}&enUso=1`);
   return (
     <ImageBackground source={fondoGeneral} style={generalStyles.backgroundImage}>
-      <View style={generalStyles.container}>
+      <View style={generalStyles.container}> 
         { rgsData ? (
           <> 
             <Text style={generalStyles.tittleText}>

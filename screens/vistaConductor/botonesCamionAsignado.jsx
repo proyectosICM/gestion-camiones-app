@@ -33,7 +33,7 @@ export function BotonesCamionAsignado({datos}) {
             titleStyle={localStyles.buttonText} 
             buttonStyle={localStyles.button}
             icon={<Icon name="build" size={20} color={ColorIcono} />}
-            onPress={() => navigation.navigate("Adjuntar Fotos", { datos: datos })}
+            onPress={() => navigation.navigate("Adjuntar Fotos", { datos: datos, clop: false })}
           />
 
           <Button
