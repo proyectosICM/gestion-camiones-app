@@ -10,34 +10,13 @@ import { useAutoFetchAsyncStorage, useGetAsyncStorage } from "../../hooks/asyncS
 
 export function VerificacionCamion() {
   const navigation = useNavigation();
-  const route = useRoute();
-
+  const route = useRoute(); 
+ 
   const [abrir, setAbrir] = useState(false);
   const [tipoVehiculo, setTipoVehiculo] = useState(null);
-  // useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
+  
   useAutoFetchAsyncStorage("tipoVehiculo", setTipoVehiculo);
-  /*
-  useEffect(() => {
-    const obtenerTipoVehiculoAsyncStorage = async () => {
-      try {
-        const data = await AsyncStorage.getItem("tipoVehiculo");
-        if (!data) {
-          await AsyncStorage.setItem("tipoVehiculo", "camion");
-          setTipoVehiculo("camion");
-        } else {
-          setTipoVehiculo(data);
-        }
-      } catch (error) {
-        console.error("Error al obtener el tipo de vehículo desde AsyncStorage:", error);
-      }
-    };
 
-    const timer = setInterval(() => {
-      obtenerTipoVehiculoAsyncStorage();
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-*/
   const handleAbrirCamera = () => {
     setAbrir(true);
   };

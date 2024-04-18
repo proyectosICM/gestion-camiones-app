@@ -11,6 +11,14 @@ import { InfoDetallada } from './screens/vistaConductor/infoDetallada/infoDetall
 import { RegistrarCambioLlantas } from './screens/vistaConductor/registarCambioLlantas/registrarCambioLlantas';
 import { Observaciones } from './screens/vistaConductor/observaciones/observaciones';
 import { AdjuntarFotos } from './common/fotosUtils/adjuntarFotos';
+import { MechanicBottonTabBar } from './screens/vistaMecanico/mechanicBottonTabBar';
+import { MenuCamionPaginado } from './common/menuCamionPaginado';
+import { VehicleInfo } from './common/checklists/vehicleInfo';
+import { ListadosChecklistConductor } from './common/checklists/listadosChecklistConductor';
+import { ListadosChecklistConductorInfo } from './common/checklists/listadosChecklistConductorInfo';
+import { VerDatosCL } from './common/checklists/verDatosCL';
+import { ListadosChecklistExpreso } from './common/checklists/listadosChecklistExpreso';
+
 
 export default function App() {
 
@@ -28,6 +36,12 @@ export default function App() {
           options={{ headerShown: false }}
         />
 
+        <Stack.Screen
+          name="Inicio Mecanico"
+          component={MechanicBottonTabBar}
+          options={{ headerShown: false }}
+        />
+
         <Stack.Screen name='Scanner' component={QRScanner} />
         <Stack.Screen name='Detalles' component={CamionDetalle} />
 
@@ -39,8 +53,16 @@ export default function App() {
         <Stack.Screen name='Cambio de llantas' component={RegistrarCambioLlantas} />
         <Stack.Screen name='Observaciones' component={Observaciones} />
 
-        
+
         <Stack.Screen name='Adjuntar Fotos' component={AdjuntarFotos} />
+
+        <Stack.Screen name='Menu camiones' component={MenuCamionPaginado}/>
+        <Stack.Screen name='Vehicle Info' component={VehicleInfo} />
+        <Stack.Screen name='Listados checklist conductor' component={ListadosChecklistConductor} />
+        <Stack.Screen name='Listados checklist conductor info' component={ListadosChecklistConductorInfo} />
+
+        <Stack.Screen name='Listados checklist expreso' component={ListadosChecklistExpreso} />
+        <Stack.Screen name='Ver CL' component={VerDatosCL} />
       </Stack.Navigator>
     </NavigationContainer>
   );

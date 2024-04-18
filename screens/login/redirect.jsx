@@ -16,7 +16,7 @@ import { useLogout } from "../../hooks/useLogout";
 export function Redirect() {
   const navigation = useNavigation();
   const [info, setInfo] = useState();
-  const [user, setUser] = useState(null); 
+  const [user, setUser] = useState(null);
   const [showText, setShowText] = useState(false);
 
   useGetAsyncStorage("username", setUser);
@@ -39,6 +39,8 @@ export function Redirect() {
 
         if (info.rolesModel.id == 1) {
           navigation.navigate("Inicio Conductor");
+        } else if (info.rolesModel.id == 2) {
+          navigation.navigate("Inicio Mecanico");
         }
       }
     };

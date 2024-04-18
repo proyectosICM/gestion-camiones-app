@@ -10,7 +10,7 @@ export const carretaChecklistItems = [
     {
       titulo: "Semi-remolque",
       datos: [
-        { nombre: "Niveles, Bolsa de aire", atributo: "nivelesBolsaDeAire" },
+        { nombre: "Muelles, Bolsa de aire", atributo: "nivelesBolsaDeAire" },
         { nombre: "Templadores bocinas", atributo: "templadoresBocinas" },
         { nombre: "Kim Pin y planca", atributo: "planca" },
         { nombre: "Sistema Freno: Zapata, Tambores", atributo: "sistemaFreno" },

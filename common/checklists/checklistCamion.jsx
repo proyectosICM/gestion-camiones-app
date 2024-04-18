@@ -8,16 +8,17 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { Button } from "react-native-elements";
 import { useGetAsyncStorage } from "../../hooks/asyncStorageUtils";
 
-export function CheckListCamion() {
+export function CheckListCamion() { 
   const navigate = useNavigation();
-
   const route = useRoute();
-  const [tipoVehiculo, setTipoVehiculo] = useState(null);
-  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
   const tables = route.params.tablesD;
 
+  const [tiempo, setTiempo] = useState(0);
+  const [tipoVehiculo, setTipoVehiculo] = useState(null);
   const [currentTable, setCurrentTable] = useState(0);
   const [marcar, setMarcar] = useState(() => tables.map((table) => Array(table.datos.length).fill(null)));
+
+  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
 
   const allTablesMarked = () => {
     return marcar.every((table) => allItemsMarked(table));
@@ -39,7 +40,6 @@ export function CheckListCamion() {
     }
   };
 
-  const [tiempo, setTiempo] = useState(0);
   const actualizarTiempo = () => {
     setTiempo((prevTiempo) => prevTiempo + 1);
   };
@@ -50,6 +50,7 @@ export function CheckListCamion() {
   }, []);
 
   const handleEnviar = () => {
+    
     navigate.navigate("CheckDatos", { datos: marcar, tiempo: tiempo, tablesD: tables });
   };
 

@@ -4,7 +4,14 @@ import { Button, Card, Icon } from "react-native-elements";
 import { generalStyles } from "../../styles/generalStyles";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useGetAsyncStorage } from "../../hooks/asyncStorageUtils";
-import { checklistCamionURL, checklistCarretaURL, rgsURL, usuarioURL } from "../../api/apiurls";
+import {
+  checklistCamionURL,
+  checklistCarretaURL,
+  checklistExpresoCamionURL,
+  checklistExpresoCarretaURL,
+  rgsURL,
+  usuarioURL,
+} from "../../api/apiurls";
 import { carretaChecklistItems } from "./checklistDataArrays/carretaChecklistItems";
 import { camionChecklistItems } from "./checklistDataArrays/camionChecklistItems";
 import { useAgregarElemento } from "../../hooks/useAgregarElemento";
@@ -19,13 +26,13 @@ export function VerificacionDatosEnvio() {
 
   const datos = route.params.datos;
   const tiempo = route.params.tiempo;
-  const [tipoVehiculo, setTipoVehiculo] = useState(null);
-  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
   const tablesD = route.params.tablesD;
 
+  const [tipoVehiculo, setTipoVehiculo] = useState(null);
   const [usuario, setUsuario] = useState();
   const [empresa, setEmpresa] = useState();
   const [sede, setSede] = useState();
+  const [rol, setRol] = useState();
   const [camionid, setCamionid] = useState();
   const [carretaid, setCarretaid] = useState();
   const [camioncl, setCamionCl] = useState();
@@ -34,10 +41,12 @@ export function VerificacionDatosEnvio() {
   useGetAsyncStorage("usuario", setUsuario);
   useGetAsyncStorage("empresa", setEmpresa);
   useGetAsyncStorage("sede", setSede);
+  useGetAsyncStorage("rol", setRol);
   useGetAsyncStorage("camionid", setCamionid);
   useGetAsyncStorage("carretaid", setCarretaid);
   useGetAsyncStorage("camioncl", setCamionCl);
   useGetAsyncStorage("carretacl", setCarretaCl);
+  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
 
   const convertirAMinutos = (segundos) => {
     const minutos = Math.floor(segundos / 60);
@@ -51,7 +60,6 @@ export function VerificacionDatosEnvio() {
   };
 
   const handleYes = (camion, carreta) => {
-    console.log("hanbdle Si")
     const datosEnvio = {
       checkListCamionModel: {
         id: camion,
@@ -63,26 +71,21 @@ export function VerificacionDatosEnvio() {
               id: carreta,
             },
     };
-   
+
     if (tipoVehiculo == "camion") {
-      console.log("1")
       AsyncStorage.setItem("tipoVehiculo", "carreta");
       navigation.navigate("Adjuntar Fotos", { datos: datosEnvio, clop: true });
     } else if (tipoVehiculo == "carreta") {
-      console.log("2")
       AsyncStorage.setItem("tipoVehiculo", "camion");
       navigation.navigate("Adjuntar Fotos", { datos: datosEnvio, clop: true });
     }
   };
 
   const handleNo = async () => {
-    console.log("hanbdle No")
     if (tipoVehiculo == "camion") {
-      console.log("3")
       AsyncStorage.setItem("tipoVehiculo", "carreta");
       navigation.navigate("Inicio");
     } else if (tipoVehiculo == "carreta") {
-      console.log("4")
       AsyncStorage.setItem("tipoVehiculo", "camion");
       navigation.navigate("Inicio");
     }
@@ -90,45 +93,67 @@ export function VerificacionDatosEnvio() {
 
   const handleEnviar = async () => {
     try {
-      const requestDataChecklist = {
-        camionesModel: { id: tipoVehiculo == "camion" ? camionid : carretaid },
-        tiempo: tiempo,
-        ...datos.reduce((acc, dataGroup, index) => {
-          dataGroup.forEach((dataItem, itemIndex) => {
-            const atributo = tablesD[index].datos[itemIndex].atributo;
-            acc[atributo] = dataItem;
-          });
-          return acc;
-        }, {}),
-      };
-
-      const url = urlMap[tipoVehiculo];
-      const cl = await useAgregarElemento(url, requestDataChecklist);
-
-      if (tipoVehiculo === "camion") {
-        await AsyncStorage.setItem("camioncl", cl.data.id.toString());
-      } else if (tipoVehiculo === "carreta") {
-        await AsyncStorage.setItem("carretacl", cl.data.id.toString());
-      }
-
-      if (tipoVehiculo == "carreta") {
-        const requestDataRGS = {
-          usuariosModel: { id: usuario },
-          checkListCamionModel: { id: camioncl },
-          checkListCarretaModel: { id: cl.data.id },
-          empresasModel: { id: empresa },
-          sedesModel: { id: sede },
-          enUso: true,
+      if (rol == "CONDUCTOR") {
+        const requestDataChecklist = {
+          camionesModel: { id: tipoVehiculo == "camion" ? camionid : carretaid },
+          tiempo: tiempo,
+          ...datos.reduce((acc, dataGroup, index) => {
+            dataGroup.forEach((dataItem, itemIndex) => {
+              const atributo = tablesD[index].datos[itemIndex].atributo;
+              acc[atributo] = dataItem;
+            });
+            return acc;
+          }, {}),
         };
 
-        await useAgregarElemento(rgsURL, requestDataRGS);
-      }
+        const url = urlMap[tipoVehiculo];
+        const cl = await useAgregarElemento(url, requestDataChecklist);
 
-      const options = [
-        { text: "Sí", onPress: handleYes(camionid, carretaid) },
-        { text: "No", onPress: handleNo, style: "cancel" },
-      ];
-      showAlert("Desea Agregar fotos", "", options);
+        if (tipoVehiculo === "camion") {
+          await AsyncStorage.setItem("camioncl", cl.data.id.toString());
+        } else if (tipoVehiculo === "carreta") {
+          await AsyncStorage.setItem("carretacl", cl.data.id.toString());
+        }
+
+        if (tipoVehiculo == "carreta") {
+          const requestDataRGS = {
+            usuariosModel: { id: usuario },
+            checkListCamionModel: { id: camioncl },
+            checkListCarretaModel: { id: cl.data.id },
+            empresasModel: { id: empresa },
+            sedesModel: { id: sede },
+            enUso: true,
+          };
+
+          await useAgregarElemento(rgsURL, requestDataRGS);
+        }
+
+        const options = [
+          { text: "Sí", onPress: handleYes(camionid, carretaid) },
+          { text: "No", onPress: handleNo, style: "cancel" },
+        ];
+        showAlert("Desea Agregar fotos", "", options);
+      } else if (rol == "MECANICO") {
+        const requestDataExpreso = {
+          camionesModel: { id: camionid },
+          usuariosModel: { id: usuario },
+          ...datos.reduce((acc, dataGroup, index) => {
+            dataGroup.forEach((dataItem, itemIndex) => {
+              const atributo = tablesD[index].datos[itemIndex].atributo;
+              acc[atributo] = dataItem;
+            });
+            return acc;
+          }, {}),
+        };
+
+        const response = await useAgregarElemento(
+          tipoVehiculo == "camion" ? checklistExpresoCamionURL : checklistExpresoCarretaURL,
+          requestDataExpreso
+        );
+        console.log(response.data);
+        Alert.alert("CheckList creado Exitosamente");
+        navigation.navigate("Vehicle Info");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -137,7 +162,6 @@ export function VerificacionDatosEnvio() {
   return (
     <ScrollView>
       <View>
-        <Text>Su rol es:</Text>
         {tablesD &&
           tablesD.map((table, index) => (
             <View key={index} style={{ alignItems: "center" }}>
@@ -168,7 +192,9 @@ export function VerificacionDatosEnvio() {
               </Card>
             </View>
           ))}
-        <Text style={generalStyles.tittleText}>Tiempo: {convertirAMinutos(tiempo)}</Text>
+
+        {tiempo && <Text style={generalStyles.tittleText}>Tiempo: {convertirAMinutos(tiempo)}</Text>}
+
         <Button title={"Confirmar Envio de datos"} onPress={() => handleEnviar()} />
       </View>
     </ScrollView>

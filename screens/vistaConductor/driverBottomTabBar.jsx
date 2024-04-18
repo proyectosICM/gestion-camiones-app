@@ -12,7 +12,7 @@ export function DriverBottomTabBar() {
 
   return (
     <Tab.Navigator 
-      screenOptions={{
+      screenOptions={{ 
         tabBarActiveTintColor: "#A69677", 
         tabBarInactiveTintColor: "#9CA4A6", 
       }}

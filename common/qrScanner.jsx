@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useGetAsyncStorage } from "../hooks/asyncStorageUtils";
 
 export const QRScanner = ({ cerrar }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); 
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 

@@ -17,19 +17,8 @@ export function AdjuntarFotos() {
 
   const datos = route.params.datos;
   const clop = route.params.clop;
+  
   const [tipoVehiculo, setTipoVehiculo] = useState(null);
-  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
-  console.log("Llego")
-  useEffect(() => {
-
-   /* if (tipoVehiculo == "camion") {
-      console.log("Si")
-      AsyncStorage.setItem("tipoVehiculo", "carreta");
-    } else if (tipoVehiculo == "carreta") {
-      AsyncStorage.setItem("tipoVehiculo", "camion");
-    }*/
-  })
-
   const [image, setImage] = useState(null);
   const [observacion, setObservacion] = useState(null);
   const [camera, setCamera] = useState(null);
@@ -38,6 +27,7 @@ export function AdjuntarFotos() {
   const [token, setToken] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
+  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
   useGetAsyncStorage("usuario", setUsuario);
   useGetAsyncStorage("empresa", setEmpresa);
   useGetAsyncStorage("token", setToken);
@@ -105,8 +95,6 @@ export function AdjuntarFotos() {
         }
 
         useAgregarElemento(FallasImagenURL, requestData);
-
-        // Reiniciar la cámara
         handleResetCamera();
 
         // console.log("Respuesta del servidor:", response.data);
@@ -138,12 +126,9 @@ export function AdjuntarFotos() {
   };
 
   const handleContinueChecklist = () => {
-    console.log("Se ejecuta")
     if (tipoVehiculo == "camion") {
-      //AsyncStorage.setItem("tipoVehiculo", "carreta");
       navigation.navigate("Inicio");
     } else if (tipoVehiculo == "carreta") {
-      //AsyncStorage.setItem("tipoVehiculo", "camion");
       navigation.navigate("Inicio");
     } 
   };

@@ -11,15 +11,14 @@ import { camionChecklistItems } from "./checklists/checklistDataArrays/camionChe
 import { useGetAsyncStorage } from "../hooks/asyncStorageUtils";
 
 export function CamionDetalle({ navigation }) {
+  const route = useRoute();
+
   const [camionData, setCamionData] = useState();
   const [camionid, setCamionid] = useState();
   const [carretaid, setCarretaid] = useState();
-
-  const route = useRoute();
-
   const [tipoVehiculo, setTipoVehiculo] = useState(null);
-  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
 
+  useGetAsyncStorage("tipoVehiculo", setTipoVehiculo);
   useGetAsyncStorage("camionid", setCamionid);
   useGetAsyncStorage("carretaid", setCarretaid);
 
@@ -29,6 +28,7 @@ export function CamionDetalle({ navigation }) {
   };
 
   const idData = idMap[tipoVehiculo];
+
   const ListarCamion = useListarElementos(`${camionesURL}/${idData}`, setCamionData);
 
   useEffect(() => {
