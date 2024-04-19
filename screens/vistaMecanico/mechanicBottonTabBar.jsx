@@ -21,14 +21,14 @@ export function MechanicBottonTabBar() {
           tabBarIcon: ({ color, size }) => <FontAwesome5 name="home" color={color} size={size} />,
         }}
       />
-
+      {/*
       <Tab.Screen
         name="Taller"
         component={Taller}
         options={{
           tabBarIcon: ({ color, size }) => <FontAwesome5 name="wrench" color={color} size={size} />,
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Cuenta"
         component={Cuenta}
