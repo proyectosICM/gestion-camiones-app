@@ -42,7 +42,7 @@ export const expresoChecklistItems = [
         { nombre: "Revisar nivel de aceite de motor y descartar posibles fugas", atributo: "nivelAceite" },
         { nombre: "Revsión nivel de refrigerante, radiador, tanque expansión, tapa y mangueras)", atributo: "nivelRefrigerante" },
         { nombre: "Revisar nviel de fluido de caja de dirección", atributo: "nivelFluidoCajaD" },
-        { nombre: "Revisar filtro de aire de motor - Esrado de contaminación", atributo: "filtroAireMotor" },
+        { nombre: "Revisar filtro de aire de motor - Estado de contaminación", atributo: "filtroAireMotor" },
       ],
     },
     {
