@@ -39,7 +39,7 @@ export const camionChecklistItems = [
     {
       titulo: "Direccion",
       datos: [
-        { nombre: "Seryo", atributo: "seryo" },
+        { nombre: "Seryo direccion", atributo: "seryo" },
         { nombre: "Alineamiento", atributo: "alineamiento" },
         { nombre: "Pines, bocinas, terminales", atributo: "pinesBocinasTerminales" },
         { nombre: "Caja de Direcion", atributo: "cajaDeDirecion" },
