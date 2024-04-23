@@ -1,4 +1,4 @@
-export const server = "http://192.168.1.232:8080";
+export const server = "http://192.168.1.232:8082";
 export const baseURL = `${server}/api/`;
 export const loginURL = `${server}/login`
 
@@ -7,6 +7,8 @@ export const fondoURL = "../../styles/fondo.jpg";
 /* Usuario URL */
 export const usuarioURL = `${baseURL}usuarios`;
 export const infoUserURL = `${baseURL}usuarios/info/`;
+
+
 
 /* Camiones URL */
 export const camionesURL = `${baseURL}camiones`;
@@ -42,3 +44,6 @@ export const cambioLlantasURL = `${baseURL}cambio-llantas`;
 //Observaciones
 export const FallasImagenURL = `${baseURL}fallas-imagen`;
 export const EnviarImagenURL = `${baseURL}fallas-imagen/guardar-imagen`;
+/* Imagenes */
+
+export const imagenesNombresURL = `${FallasImagenURL}/AllNamesimages`;

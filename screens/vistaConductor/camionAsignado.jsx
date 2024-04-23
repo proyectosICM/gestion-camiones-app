@@ -30,7 +30,7 @@ export function CamionAsignado() {
           <>
             <Text style={generalStyles.tittleText}>Placa Camion: {rgsData && rgsData.checkListCamionModel.camionesModel.placa}</Text>
             <Text style={generalStyles.tittleText}>Placa Tracto: {rgsData && rgsData.checkListCarretaModel.camionesModel.placa}</Text>
-            {<BotonesCamionAsignado datos={rgsData} />}
+            {rgsData &&  (<BotonesCamionAsignado datos={rgsData} clcam = {rgsData.checkListCamionModel.id} />)}
           </>
         ) : tipoVehiculo === "carreta" ? (
           <>

@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { BotonColorOscuro, ColorIcono, ColorTextoBoton } from "../../styles/paletaColores";
 import { useNavigation } from "@react-navigation/native";
 
-export function BotonesCamionAsignado({datos}) { 
+export function BotonesCamionAsignado({ datos }) {
   const navigation = useNavigation();
+
   return (
     <>
       <View style={localStyles.buttonRow}>
         <View style={localStyles.buttonContainer}>
           <Button
             title={"Informacion detallada del camion"}
-            titleStyle={localStyles.buttonText} 
+            titleStyle={localStyles.buttonText}
             buttonStyle={localStyles.button}
             onPress={() => navigation.navigate("InfoDetallada", { datos: datos })}
             icon={<Icon name="info" size={20} color={ColorIcono} />}
@@ -30,7 +31,7 @@ export function BotonesCamionAsignado({datos}) {
         <View style={localStyles.buttonContainer}>
           <Button
             title={"Reportar una falla"}
-            titleStyle={localStyles.buttonText} 
+            titleStyle={localStyles.buttonText}
             buttonStyle={localStyles.button}
             icon={<Icon name="build" size={20} color={ColorIcono} />}
             onPress={() => navigation.navigate("Adjuntar Fotos", { datos: datos, clop: false })}
@@ -48,13 +49,15 @@ export function BotonesCamionAsignado({datos}) {
 
       <View style={localStyles.buttonRow}>
         <View style={localStyles.buttonContainer}>
-          <Button
-            title={"Ver fotos asociadas al Registro"}
-            titleStyle={localStyles.buttonText}
-            buttonStyle={localStyles.button}
-            icon={<Icon name="photo" size={20} color={ColorIcono} />}
-            onPress={() => navigation.navigate("Galeria", { idRgs: datos.rgsModel.id })}
-          />
+          {datos.checkListCamionModel.id && datos.checkListCarretaModel.id && (
+            <Button
+              title={"Ver fotos asociadas al Registro"}
+              titleStyle={localStyles.buttonText}
+              buttonStyle={localStyles.button}
+              icon={<Icon name="photo" size={20} color={ColorIcono} />}
+              onPress={() => navigation.navigate("Galeria", { dato1: datos.checkListCamionModel.id, dato2: datos.checkListCarretaModel.id, dt: "conductor" })}
+            />
+          )}
         </View>
       </View>
     </>

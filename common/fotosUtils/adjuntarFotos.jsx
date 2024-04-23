@@ -17,7 +17,7 @@ export function AdjuntarFotos() {
 
   const datos = route.params.datos;
   const clop = route.params.clop;
-  
+  console.log(datos);
   const [tipoVehiculo, setTipoVehiculo] = useState(null);
   const [image, setImage] = useState(null);
   const [observacion, setObservacion] = useState(null);
@@ -90,7 +90,7 @@ export function AdjuntarFotos() {
           checkListCarretaModel: datos.checkListCarretaModel
             ? {
                 id: datos.checkListCarretaModel.id,
-              }
+              } 
             : null,
         }
 

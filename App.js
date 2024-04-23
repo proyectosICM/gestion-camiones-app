@@ -18,6 +18,7 @@ import { ListadosChecklistConductor } from './common/checklists/listadosChecklis
 import { ListadosChecklistConductorInfo } from './common/checklists/listadosChecklistConductorInfo';
 import { VerDatosCL } from './common/checklists/verDatosCL';
 import { ListadosChecklistExpreso } from './common/checklists/listadosChecklistExpreso';
+import GaleriaImagenes from './common/fotosUtils/galeriaImagenes';
 
 
 export default function App() {
@@ -55,6 +56,7 @@ export default function App() {
 
 
         <Stack.Screen name='Adjuntar Fotos' component={AdjuntarFotos} />
+        <Stack.Screen name='Galeria' component={GaleriaImagenes} />
 
         <Stack.Screen name='Menu camiones' component={MenuCamionPaginado}/>
         <Stack.Screen name='Vehicle Info' component={VehicleInfo} />

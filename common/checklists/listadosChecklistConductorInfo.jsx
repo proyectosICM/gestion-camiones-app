@@ -69,7 +69,7 @@ export function ListadosChecklistConductorInfo() {
               buttonStyle={[generalStyles.styleButton, { marginTop: 15 }]}
               titleStyle={generalStyles.textoButton}
               iconRight
-              onPress={() => navigation.navigate("Listados checklist conductor info")}
+              onPress={() => navigation.navigate("Galeria", { dato1: rgsData.checkListCamionModel.id, dato2: rgsData.checkListCarretaModel.id, dt: "conductor" })}
             />
           </View>
         </View>

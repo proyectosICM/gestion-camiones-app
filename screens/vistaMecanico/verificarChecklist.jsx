@@ -1,9 +1,9 @@
 import React from "react";
 
-import { ColorIcono, fondoGeneral } from "../../styles/paletaColores";
+import { ColorIcono, QR_Logo, fondoGeneral } from "../../styles/paletaColores";
 import { generalStyles } from "../../styles/generalStyles";
 import { Button } from "react-native-elements";
-import { ImageBackground, Text, View } from "react-native";
+import { Image, ImageBackground, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 export function VerificarChecklist() {
@@ -11,7 +11,10 @@ export function VerificarChecklist() {
   return (
     <ImageBackground source={fondoGeneral} style={generalStyles.backgroundImage}>
       <View style={generalStyles.container}>
-        <Text style={generalStyles.tittleText}>Escanear QR de camion</Text>
+
+      <Image source={QR_Logo} style={{ width: 100, height: 100, marginVertical: 20 }} />
+        {/*   
+             <Text style={generalStyles.tittleText}>Escanear QR de camion</Text>
         <Text></Text>
         <Button
           title=" Abrir Camara "
@@ -19,14 +22,14 @@ export function VerificarChecklist() {
           buttonStyle={generalStyles.styleButton}
           titleStyle={generalStyles.textoButton}
           icon={{
-            name: "camera",
+            name: "camera", 
             type: "font-awesome",
             size: 25,
             color: ColorIcono,
           }}
           iconRight
         />
-        <Text style={generalStyles.tittleText}>O</Text>
+        <Text style={generalStyles.tittleText}>O</Text> */}
 
         <Button
           title=" Buscar Camion en Menu "

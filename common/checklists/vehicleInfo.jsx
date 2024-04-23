@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Alert, ImageBackground, StyleSheet, Text, View } from "react-native";
 import { fondoGeneral } from "../../styles/paletaColores";
 import { generalStyles } from "../../styles/generalStyles";
-import { Button } from "react-native-elements";
+import { Button, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { expresoChecklistItems } from "./checklistDataArrays/expresoChecklistItems";
 import { useGetAsyncStorage } from "../../hooks/asyncStorageUtils";
@@ -26,12 +26,11 @@ export function VehicleInfo() {
 
   useEffect(() => {
     if (camionData) {
-      if(camionData.tiposCModel.id == 1){
+      if (camionData.tiposCModel.id == 1) {
         AsyncStorage.setItem("tipoVehiculo", "camion");
-      } else if(camionData.tiposCModel.id == 2){
+      } else if (camionData.tiposCModel.id == 2) {
         AsyncStorage.setItem("tipoVehiculo", "carreta");
       }
-
     }
   }, [camionData]);
 
@@ -42,7 +41,13 @@ export function VehicleInfo() {
       <View style={styles.container}>
         <View style={styles.cardRow}>
           <View style={styles.cardContainer}>
-            <Text>Ver los registro de salida de los conductores (checklist camion - carreta)</Text>
+            <Icon
+              name="truck" // Nombre del icono
+              type="font-awesome-5" // Tipo de icono (en este caso, font-awesome-5)
+              size={30} // Tamaño del icono
+              color="#000" // Color del icono
+            />
+            <Text style={styles.cardText}>Ver los registro de salida de los conductores (checklist camion - carreta)</Text>
             <Button
               title="Ver listas"
               buttonStyle={[generalStyles.styleButton, { marginTop: 15, width: "95%" }]}
@@ -52,7 +57,13 @@ export function VehicleInfo() {
             />
           </View>
           <View style={styles.cardContainer}>
-            <Text>Ver los checklist Expreso</Text>
+            <Icon
+              name="clipboard-check" // Nombre del icono
+              type="font-awesome-5" // Tipo de icono (en este caso, font-awesome-5)
+              size={30} // Tamaño del icono
+              color="#000" // Color del icono
+            />
+            <Text style={styles.cardText}>Ver los checklist Expreso</Text>
             <Button
               title="Ver listas"
               buttonStyle={[generalStyles.styleButton, { marginTop: 15, width: "95%" }]}
@@ -64,7 +75,13 @@ export function VehicleInfo() {
         </View>
         <View style={styles.cardRow}>
           <View style={styles.cardContainer}>
-            <Text>Realizar checklist expreso</Text>
+            <Icon
+              name="clipboard-list" // Nombre del icono
+              type="font-awesome-5" // Tipo de icono (en este caso, font-awesome-5)
+              size={30} // Tamaño del icono
+              color="#000" // Color del icono
+            />
+            <Text style={styles.cardText}>Realizar checklist expreso</Text>
             <Button
               title="Realizar"
               buttonStyle={[generalStyles.styleButton, { marginTop: 15, width: "95%" }]}
@@ -107,5 +124,10 @@ const styles = StyleSheet.create({
     shadowRadius: 4, // Para sombra en iOS
     width: "40%", // Ajustado para que ocupe más espacio en la pantalla
     alignItems: "center",
+
+    justifyContent: "center",
+  },
+  cardText: {
+    textAlign: "center", // Alinea el texto al centro
   },
 });

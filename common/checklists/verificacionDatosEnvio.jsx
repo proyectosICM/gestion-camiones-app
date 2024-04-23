@@ -91,6 +91,17 @@ export function VerificacionDatosEnvio() {
     }
   };
 
+  const handleRedirigir = async() => {
+    if (tipoVehiculo == "camion") {
+      AsyncStorage.setItem("tipoVehiculo", "carreta");
+      navigation.navigate("Inicio");
+    } else if (tipoVehiculo == "carreta") {
+      AsyncStorage.setItem("tipoVehiculo", "camion");
+      navigation.navigate("Inicio");
+    }
+  };
+  
+
   const handleEnviar = async () => {
     try {
       if (rol == "CONDUCTOR") {
@@ -127,12 +138,15 @@ export function VerificacionDatosEnvio() {
 
           await useAgregarElemento(rgsURL, requestDataRGS);
         }
-
+        /*
         const options = [
-          { text: "Sí", onPress: handleYes(camionid, carretaid) },
+          { text: "Sí", onPress: handleYes(camioncl, carretacl) },
           { text: "No", onPress: handleNo, style: "cancel" },
         ];
         showAlert("Desea Agregar fotos", "", options);
+        */
+
+        handleRedirigir();
       } else if (rol == "MECANICO") {
         const requestDataExpreso = {
           camionesModel: { id: camionid },

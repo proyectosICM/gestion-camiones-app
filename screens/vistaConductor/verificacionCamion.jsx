@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, ImageBackground, Text, View } from "react-native";
+import { Alert, Image, ImageBackground, Text, View, StyleSheet } from "react-native";
 import { generalStyles } from "../../styles/generalStyles";
 import { ColorIcono, ColorTexto, QR_Logo, fondoGeneral } from "../../styles/paletaColores";
 import { Button } from "react-native-elements";
@@ -10,11 +10,11 @@ import { useAutoFetchAsyncStorage, useGetAsyncStorage } from "../../hooks/asyncS
 
 export function VerificacionCamion() {
   const navigation = useNavigation();
-  const route = useRoute(); 
- 
+  const route = useRoute();
+
   const [abrir, setAbrir] = useState(false);
   const [tipoVehiculo, setTipoVehiculo] = useState(null);
-  
+
   useAutoFetchAsyncStorage("tipoVehiculo", setTipoVehiculo);
 
   const handleAbrirCamera = () => {
@@ -23,6 +23,21 @@ export function VerificacionCamion() {
 
   const handleCerrarCamera = () => {
     setAbrir(false);
+  };
+
+  const handleReiniciarCl = async () => {
+    Alert.alert("Reiniciar Checklist", "¿Estás seguro de que deseas reiniciar el checklist?", [
+      {
+        text: "Cancelar",
+        style: "cancel",
+      },
+      {
+        text: "Aceptar",
+        onPress: async () => {
+          await AsyncStorage.setItem("tipoVehiculo", "camion");
+        },
+      },
+    ]);
   };
 
   return abrir ? (
@@ -58,7 +73,30 @@ export function VerificacionCamion() {
           iconRight
           onPress={handleAbrirCamera}
         />
+
+        {tipoVehiculo == "carreta" && (
+          <Button
+            title=" Reiniciar Checklist "
+            type="outline"
+            buttonStyle={[generalStyles.buttonPalette, styles.marginTop]}
+            titleStyle={generalStyles.textoButton}
+            icon={{
+              name: "refresh",
+              type: "font-awesome",
+              size: 25,
+              color: ColorIcono,
+            }}
+            iconRight
+            onPress={handleReiniciarCl}
+          />
+        )}
       </View>
     </ImageBackground>
   );
 }
+
+const styles = StyleSheet.create({
+  marginTop: {
+    marginTop: 80,
+  },
+});

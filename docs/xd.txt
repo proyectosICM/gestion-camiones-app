@@ -1,0 +1,77 @@
+import React, { useEffect, useState } from "react";
+import { Dimensions, Image, ImageBackground, StyleSheet, Text, View } from "react-native";
+import { generalStyles } from "../../styles/generalStyles";
+import { useListarElementos } from "../../hooks/useListUtils";
+import { FallasImagenURL, imagenesNombresURL } from "../../api/apiurls";
+import axios from "axios";
+import * as FileSystem from 'expo-file-system';
+
+export default function GaleriaImagenes() {
+  const [imagesData, setImagesData] = useState([]);
+  const [imagesFiles, setImagesFiles] = useState([]);
+
+  const idEmpresa = 1;
+  const data1 = 7;
+  const data2 = 11;
+  const ListarNombres = useListarElementos(`${imagenesNombresURL}?empresaId=1&dt=conductor&dato1=7&dato2=11`, setImagesData);
+
+  useEffect(() => {
+    ListarNombres();
+  }, [ListarNombres]);
+
+  useEffect(() => {
+    const downloadAndSaveImage = async (imageUrl, filename) => {
+      try {
+        const { uri } = await FileSystem.downloadAsync(imageUrl, FileSystem.cacheDirectory + filename);
+        return uri;
+      } catch (error) {
+        console.error('Error downloading image:', error);
+        return null;
+      }
+    };
+
+    const fetchImages = async () => {
+      if (imagesData.length > 0) {
+        const fetchedImages = [];
+        for (const filename of imagesData) {
+          try {
+            const imageUrl = `${FallasImagenURL}/images-des?company=1&filename=${filename}`;
+            const localUri = await downloadAndSaveImage(imageUrl, filename);
+            if (localUri) {
+              fetchedImages.push({ uri: localUri });
+            }
+          } catch (error) {
+            console.error('Error fetching image:', error);
+          }
+        }
+        setImagesFiles(fetchedImages);
+      }
+    };
+    fetchImages();
+  }, [imagesData]);
+
+  return (
+    <ImageBackground style={generalStyles.backgroundImage}>
+      <View style={styles.container}>
+        {imagesFiles.map((image, index) => (
+          <Image key={index} source={image} style={styles.image} />
+        ))}
+      </View>
+    </ImageBackground>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "#f0f0f0",
+    marginTop: 60,
+    alignItems: "center",
+  },
+  image: {
+    width: Dimensions.get("window").width - 100,
+    height: Dimensions.get("window").height - 500,
+    marginBottom: 10,
+  },
+});
